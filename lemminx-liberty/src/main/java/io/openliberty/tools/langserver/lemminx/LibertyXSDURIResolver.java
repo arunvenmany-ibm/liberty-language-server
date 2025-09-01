@@ -22,6 +22,7 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.logging.Logger;
 
+import io.openliberty.tools.langserver.lemminx.services.FeatureService;
 import io.openliberty.tools.langserver.lemminx.services.SettingsService;
 import io.openliberty.tools.langserver.lemminx.util.LibertyVersionDownloadUtil;
 import io.openliberty.tools.langserver.lemminx.util.SchemaAndFeatureListGeneratorUtil;
@@ -191,6 +192,9 @@ public class LibertyXSDURIResolver implements URIResolverExtension, IExternalGra
                         xsdDestFile,
                         SettingsService.getInstance().getCurrentLocale().toString()
                 );
+                // good to clean feature cache when we are generating xsd
+                // this will make sure the next completion will always take up correct feature.json
+                FeatureService.getInstance().evictCache();
             } catch (Exception e) {
                 LOGGER.warning(e.getMessage());
                 LOGGER.warning("Due to an exception during schema file generation, a cached schema file will be used.");

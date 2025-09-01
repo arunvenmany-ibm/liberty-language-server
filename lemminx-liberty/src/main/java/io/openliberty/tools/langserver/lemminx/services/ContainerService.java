@@ -1,5 +1,5 @@
 /*******************************************************************************
-* Copyright (c) 2022, 2023 IBM Corporation and others.
+* Copyright (c) 2022, 2025 IBM Corporation and others.
 *
 * This program and the accompanying materials are made available under the
 * terms of the Eclipse Public License v. 2.0 which is available at
@@ -132,6 +132,9 @@ public class ContainerService {
         // do some post processing to remove the anyAttribute element from parent element if there is no extraProperties sibling
         DocumentUtil.removeExtraneousAnyAttributeElements(xsdFile);
 
+        // good to clean feature cache when we are generating xsd
+        // this would make sure that next completion will take the correct feature.json
+        FeatureService.getInstance().evictCache();
         LOGGER.info("Using schema file at: " + xsdFile.toURI().toString());
         return xsdFile.toURI().toString();
     }
